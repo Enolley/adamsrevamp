@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adam's Fountain — Purified Water, Delivered</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<style>
+  :root{
+    --ink:#0A2A43;
+    --teal:#1B6FB8;
+    --teal-dark:#14568F;
+    --teal-deep:#071D30;
+    --lime:#7FCBEF;
+    --lime-dark:#4CA9D9;
+    --bg:#F4F8FB;
+    --white:#FFFFFF;
+    --muted:#57708A;
+    --radius-lg:28px;
+    --radius-md:18px;
+  }
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display-font{
+    font-family:'Fraunces', serif;
+    letter-spacing:-0.01em;
+  }
+
+  .mono-font{
+    font-family:'Space Grotesk', monospace;
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  .text-muted-custom{color:var(--muted);}
+
+  /* ===== NAVBAR ===== */
+  .navbar-custom{
+    background:rgba(246,248,245,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(11,61,62,0.08);
+    padding:0.9rem 0;
+    transition:all .3s ease;
+  }
+  .navbar-brand-custom{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:1.35rem;
+    color:var(--ink) !important;
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+  }
+  .navbar-brand-custom .drop-icon{
+    width:30px;height:30px;
+    background:var(--teal);
+    border-radius:50% 50% 50% 4px;
+    transform:rotate(-45deg);
+    display:inline-block;
+    position:relative;
+  }
+  .navbar-brand-custom .drop-icon::after{
+    content:'';
+    position:absolute;
+    inset:6px;
+    background:var(--lime);
+    border-radius:50% 50% 50% 4px;
+  }
+  .nav-link-custom{
+    font-weight:500;
+    font-size:0.95rem;
+    color:var(--ink) !important;
+    margin:0 0.65rem;
+    position:relative;
+  }
+  .nav-link-custom::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:-4px;
+    width:0; height:2px;
+    background:var(--lime-dark);
+    transition:width .25s ease;
+  }
+  .nav-link-custom:hover::after{width:100%;}
+
+  .btn-order{
+    background:var(--ink);
+    color:var(--white);
+    border-radius:999px;
+    padding:0.6rem 1.4rem;
+    font-weight:600;
+    font-size:0.9rem;
+    border:none;
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .btn-order:hover{background:var(--teal-dark); color:var(--white); transform:translateY(-2px);}
+
+  .btn-outline-ink{
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    border-radius:999px;
+    padding:0.55rem 1.35rem;
+    font-weight:600;
+    font-size:0.9rem;
+    transition:all .2s ease;
+  }
+  .btn-outline-ink:hover{background:var(--ink); color:var(--white);}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:8.5rem 0 6rem;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 60% 50% at 85% 10%, rgba(201,226,101,0.35), transparent 60%),
+      radial-gradient(ellipse 60% 60% at 10% 90%, rgba(18,119,122,0.18), transparent 60%);
+  }
+  .hero .eyebrow{
+    font-family:'Space Grotesk', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--teal-dark);
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+  }
+  .hero .eyebrow::before{
+    content:'';
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--lime-dark);
+    display:inline-block;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.3rem);
+    line-height:1.04;
+    font-weight:600;
+    margin:1.1rem 0 1.4rem;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--teal);
+  }
+  .hero p.lead-custom{
+    font-size:1.1rem;
+    color:var(--muted);
+    max-width:480px;
+    line-height:1.6;
+  }
+
+  .hero-visual{
+    position:relative;
+    height:460px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-blob{
+    position:absolute;
+    width:380px;height:380px;
+    background:linear-gradient(160deg, var(--teal) 0%, var(--teal-dark) 100%);
+    border-radius:42% 58% 65% 35% / 45% 40% 60% 55%;
+    animation:blobMove 9s ease-in-out infinite;
+  }
+  @keyframes blobMove{
+    0%,100%{border-radius:42% 58% 65% 35% / 45% 40% 60% 55%;}
+    50%{border-radius:58% 42% 35% 65% / 55% 60% 40% 45%;}
+  }
+  .hero-drop{
+    position:relative;
+    z-index:2;
+    width:130px;
+  }
+  .stat-chip{
+    position:absolute;
+    background:var(--white);
+    border-radius:var(--radius-md);
+    padding:0.9rem 1.15rem;
+    box-shadow:0 12px 30px -10px rgba(11,61,62,0.25);
+    z-index:3;
+  }
+  .stat-chip .num{
+    font-family:'Space Grotesk', monospace;
+    font-weight:700;
+    font-size:1.5rem;
+    color:var(--ink);
+    line-height:1;
+  }
+  .stat-chip .label{
+    font-size:0.72rem;
+    color:var(--muted);
+    font-weight:500;
+  }
+  .stat-chip.chip-1{top:8%; left:0;}
+  .stat-chip.chip-2{bottom:10%; right:0;}
+
+  /* ===== TRUST STRIP ===== */
+  .trust-strip{
+    background:var(--ink);
+    padding:1.1rem 0;
+  }
+  .trust-strip .item{
+    color:rgba(255,255,255,0.88);
+    font-size:0.85rem;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+    justify-content:center;
+  }
+  .trust-strip .item i{color:var(--lime);}
+
+  /* ===== SECTION HEADERS ===== */
+  .section-pad{padding:6rem 0;}
+  .section-eyebrow{
+    font-family:'Space Grotesk', monospace;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-size:0.75rem;
+    font-weight:600;
+    color:var(--teal);
+  }
+  .section-title{
+    font-size:clamp(1.9rem, 3vw, 2.6rem);
+    font-weight:600;
+    margin-top:0.5rem;
+  }
+
+  /* ===== SERVICES / GALLERY ===== */
+  .service-card{
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    position:relative;
+    height:340px;
+    box-shadow:0 15px 40px -15px rgba(11,61,62,0.2);
+  }
+  .service-card img{
+    width:100%; height:100%;
+    object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .service-card:hover img{transform:scale(1.08);}
+  .service-card .overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(8,43,44,0.85) 0%, rgba(8,43,44,0) 55%);
+    display:flex;
+    align-items:flex-end;
+    padding:1.5rem;
+  }
+  .service-card .overlay h5{
+    color:var(--white);
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+  }
+  .service-card .overlay span{
+    color:rgba(255,255,255,0.75);
+    font-size:0.8rem;
+  }
+
+  /* ===== PRICING — signature liquid-fill cards ===== */
+  .pricing-section{
+    background:var(--teal-deep);
+    border-radius:var(--radius-lg);
+    padding:4.5rem 2.5rem;
+    position:relative;
+    overflow:hidden;
+  }
+  .pricing-section .section-eyebrow{color:var(--lime);}
+  .pricing-section .section-title{color:var(--white);}
+  .pricing-section .section-sub{color:rgba(255,255,255,0.65);}
+
+  .price-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:var(--radius-md);
+    position:relative;
+    overflow:hidden;
+    height:100%;
+    padding:1.6rem 1.3rem 1.4rem;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    min-height:250px;
+  }
+  .price-card .fill{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:0%;
+    background:linear-gradient(180deg, rgba(201,226,101,0.85), rgba(18,119,122,0.85));
+    transition:height 1.4s cubic-bezier(.22,.9,.3,1);
+    z-index:0;
+  }
+  .price-card .fill::before{
+    content:'';
+    position:absolute;
+    top:-1px; left:0; right:0; height:10px;
+    background:
+      radial-gradient(circle at 10px -2px, transparent 10px, var(--lime) 11px) repeat-x,
+      radial-gradient(circle at 30px 8px, transparent 10px, var(--teal) 11px) repeat-x;
+    background-size:20px 12px;
+    opacity:0.5;
+  }
+  .price-card .content{
+    position:relative;
+    z-index:1;
+  }
+  .price-card .size{
+    font-family:'Space Grotesk', monospace;
+    font-weight:700;
+    font-size:1.6rem;
+    color:var(--white);
+  }
+  .price-card .price{
+    font-family:'Space Grotesk', monospace;
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--white);
+    margin-top:0.3rem;
+  }
+  .price-card .refill{
+    font-size:0.78rem;
+    color:rgba(255,255,255,0.7);
+    margin-top:0.15rem;
+  }
+  .price-card.featured{
+    border-color:var(--lime);
+    box-shadow:0 0 0 1px var(--lime), 0 20px 40px -15px rgba(201,226,101,0.3);
+  }
+  .price-card .badge-pop{
+    position:absolute;
+    top:0.9rem; right:0.9rem;
+    background:var(--lime);
+    color:var(--teal-deep);
+    font-size:0.68rem;
+    font-weight:700;
+    padding:0.28rem 0.6rem;
+    border-radius:999px;
+    z-index:2;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+
+  /* ===== ABOUT ===== */
+  .about-card{
+    background:var(--white);
+    border-radius:var(--radius-lg);
+    padding:3rem;
+    box-shadow:0 20px 50px -25px rgba(11,61,62,0.25);
+  }
+  .about-figure{
+    font-family:'Fraunces', serif;
+    font-size:3rem;
+    font-weight:700;
+    color:var(--teal);
+    line-height:1;
+  }
+  .about-figure-label{
+    font-size:0.8rem;
+    color:var(--muted);
+    font-weight:500;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-card{
+    background:var(--ink);
+    border-radius:var(--radius-lg);
+    padding:3rem;
+    color:var(--white);
+  }
+  .contact-card .form-control{
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    color:var(--white);
+    border-radius:12px;
+    padding:0.8rem 1rem;
+  }
+  .contact-card .form-control::placeholder{color:rgba(255,255,255,0.45);}
+  .contact-card .form-control:focus{
+    background:rgba(255,255,255,0.1);
+    border-color:var(--lime);
+    box-shadow:0 0 0 3px rgba(201,226,101,0.2);
+    color:var(--white);
+  }
+  .contact-info-item{
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+    padding:1rem 0;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .contact-info-item i{
+    width:42px; height:42px;
+    background:rgba(201,226,101,0.15);
+    color:var(--lime);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem;
+    flex-shrink:0;
+  }
+  .map-wrap{
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    height:100%;
+    min-height:300px;
+    filter:grayscale(0.3) contrast(1.05);
+  }
+
+  /* ===== FOOTER ===== */
+  footer{
+    padding:2.2rem 0;
+    border-top:1px solid rgba(11,61,62,0.1);
+  }
+  footer .drop-icon-sm{
+    width:20px;height:20px;
+    background:var(--teal);
+    border-radius:50% 50% 50% 4px;
+    transform:rotate(-45deg);
+    display:inline-block;
+  }
+
+  /* ===== STICKY MOBILE CTA ===== */
+  .mobile-cta{
+    position:fixed;
+    bottom:1rem; left:50%;
+    transform:translateX(-50%);
+    z-index:1050;
+    display:none;
+  }
+  @media (max-width:767px){
+    .mobile-cta{display:block;}
+    .hero{padding:7rem 0 4rem;}
+    .hero-visual{height:300px; margin-top:2rem;}
+    .stat-chip{padding:0.7rem 0.9rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+  <div class="container">
+    <a class="navbar-brand navbar-brand-custom" href="#home">
+      <span class="drop-icon"></span> Adam's Fountain
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#pricing">Pricing</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="#contact">Contact</a></li>
+      </ul>
+      <a href="https://wa.me/254728743443?text=Hi%2C%20I%27d%20like%20to%20order%20water" class="btn-order">
+        <i class="bi bi-whatsapp"></i> Order Now
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <span class="eyebrow">Lab tested &middot; Kenyan made</span>
+        <h1>Water, the way<br>it's <em>meant</em> to taste.</h1>
+        <p class="lead-custom">
+          Every bottle from Adam's Fountain passes multiple purity and quality checks
+          before it reaches you &mdash; so you get freshness, not just hydration.
+          Delivered across the city, refills included.
+        </p>
+        <div class="d-flex gap-3 mt-4 flex-wrap">
+          <a href="https://wa.me/254728743443?text=Hi%2C%20I%27d%20like%20to%20order%20water" class="btn-order">
+            <i class="bi bi-whatsapp"></i> Order via WhatsApp
+          </a>
+          <a href="#pricing" class="btn-outline-ink">See Pricing</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-visual">
+          <div class="hero-blob"></div>
+          <svg class="hero-drop" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5 C 80 45, 95 70, 95 90 A 45 45 0 1 1 5 90 C 5 70, 20 45, 50 5 Z" fill="#F6F8F5"/>
+            <path d="M50 5 C 80 45, 95 70, 95 90 A 45 45 0 1 1 5 90 C 5 70, 20 45, 50 5 Z" fill="none" stroke="#0B3D3E" stroke-width="2" opacity="0.15"/>
+          </svg>
+          <div class="stat-chip chip-1">
+            <div class="num">6</div>
+            <div class="label">Sizes available</div>
+          </div>
+          <div class="stat-chip chip-2">
+            <div class="num">24hr</div>
+            <div class="label">Delivery turnaround</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST STRIP ===== -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-6 col-md-3"><div class="item"><i class="bi bi-patch-check-fill"></i> Purity Tested</div></div>
+      <div class="col-6 col-md-3"><div class="item"><i class="bi bi-truck"></i> Free Local Delivery</div></div>
+      <div class="col-6 col-md-3"><div class="item"><i class="bi bi-arrow-repeat"></i> Refill & Save</div></div>
+      <div class="col-6 col-md-3"><div class="item"><i class="bi bi-droplet-fill"></i> 500ml &ndash; 20L</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SERVICES / GALLERY ===== -->
+<section class="section-pad" id="services">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <span class="section-eyebrow">Behind the bottle</span>
+        <h2 class="section-title">From our taps to your table.</h2>
+      </div>
+      <div class="col-lg-6 d-flex align-items-end">
+        <p class="text-muted-custom mb-0">
+          Take a look inside the plant where every batch is filtered, tested, and sealed
+          before it ever leaves our office.
+        </p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="service-card">
+          <img src="https://adamsfountain.co.ke/images/IMG_2907.jpeg" alt="Adam's Fountain factory">
+          <div class="overlay">
+            <div>
+              <span>01</span>
+              <h5>The Factory</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <img src="https://adamsfountain.co.ke/images/IMG_2909.jpeg" alt="Filtration taps">
+          <div class="overlay">
+            <div>
+              <span>02</span>
+              <h5>Filtration Taps</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card">
+          <img src="https://adamsfountain.co.ke/images/IMG_2911.jpg" alt="Adam's Fountain office">
+          <div class="overlay">
+            <div>
+              <span>03</span>
+              <h5>Our Office</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section-pad" id="pricing">
+  <div class="container">
+    <div class="pricing-section">
+      <div class="row mb-5">
+        <div class="col-lg-7">
+          <span class="section-eyebrow">Price list</span>
+          <h2 class="section-title">Simple pricing, real refill savings.</h2>
+          <p class="section-sub mt-2 mb-0">Bring your own container back and refill for a fraction of the price.</p>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="price-card" data-fill="15">
+            <div class="fill"></div>
+            <div class="content">
+              <div class="size">500ml</div>
+              <div class="price">Ksh 15</div>
+              <div class="refill">Refill: &mdash;</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="price-card" data-fill="28">
+            <div class="fill"></div>
+            <div class="content">
+              <div class="size">1L</div>
+              <div class="price">Ksh 31</div>
+              <div class="refill">Refill: Ksh 5</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="price-card" data-fill="50">
+            <div class="fill"></div>
+            <div class="content">
+              <div class="size">5L</div>
+              <div class="price">Ksh 100</div>
+              <div class="refill">Refill: Ksh 25</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="price-card featured" data-fill="68">
+            <span class="badge-pop">Popular</span>
+            <div class="fill"></div>
+            <div class="content">
+              <div class="size">10L</div>
+              <div class="price">Ksh 200</div>
+              <div class="refill">Refill: Ksh 50</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="price-card" data-fill="90">
+            <div class="fill"></div>
+            <div class="content">
+              <div class="size">20L</div>
+              <div class="price">Ksh 350</div>
+              <div class="refill">Refill: Ksh 100</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+          <a href="https://wa.me/254728743443?text=Hi%2C%20I%27d%20like%20to%20order%20water" class="price-card text-center justify-content-center align-items-center" style="text-decoration:none;">
+            <div class="content">
+              <i class="bi bi-whatsapp" style="font-size:1.8rem; color:var(--lime);"></i>
+              <div class="price mt-2">Order Now</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section-pad" id="about">
+  <div class="container">
+    <div class="about-card">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="section-eyebrow">Our commitment</span>
+          <h2 class="section-title">Purity isn't a claim. It's a process.</h2>
+          <p class="text-muted-custom mt-3">
+            Adam's Fountain water passes through multiple purity and quality checks before
+            bottling &mdash; because your body deserves water that's actually clean, not just
+            labeled that way. From our factory taps to your door, every batch is tested for
+            freshness, quality, and flavor.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <div class="row g-4">
+            <div class="col-6">
+              <div class="about-figure">6</div>
+              <div class="about-figure-label">Bottle sizes, from 500ml to 20L</div>
+            </div>
+            <div class="col-6">
+              <div class="about-figure">100%</div>
+              <div class="about-figure-label">Tested for purity & quality</div>
+            </div>
+            <div class="col-6">
+              <div class="about-figure">24hr</div>
+              <div class="about-figure-label">Delivery turnaround</div>
+            </div>
+            <div class="col-6">
+              <div class="about-figure">∞</div>
+              <div class="about-figure-label">Refills on your own containers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section-pad" id="contact">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <span class="section-eyebrow">Get in touch</span>
+        <h2 class="section-title">Order, ask, or just say hi.</h2>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="contact-card h-100">
+          <h5 class="mb-4" style="font-family:'Fraunces',serif;">Contact details</h5>
+          <div class="contact-info-item">
+            <i class="bi bi-telephone-fill"></i>
+            <div>
+              <div style="font-size:0.75rem; color:rgba(255,255,255,0.6);">Call or WhatsApp</div>
+              <a href="tel:0728743443">0728 743 443</a>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <i class="bi bi-envelope-fill"></i>
+            <div>
+              <div style="font-size:0.75rem; color:rgba(255,255,255,0.6);">Email</div>
+              <a href="mailto:info@adamsfountain.co.ke">info@adamsfountain.co.ke</a>
+            </div>
+          </div>
+          <div class="contact-info-item" style="border-bottom:none;">
+            <i class="bi bi-truck"></i>
+            <div>
+              <div style="font-size:0.75rem; color:rgba(255,255,255,0.6);">Delivery & refills</div>
+              <div>Available across the area</div>
+            </div>
+          </div>
+
+          <form class="mt-4">
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Your name">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Phone number">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="3" placeholder="What do you need?"></textarea>
+            </div>
+            <button type="submit" class="btn-order w-100 justify-content-center">
+              Send message <i class="bi bi-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="map-wrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7921.547688683689!2d36.71962653564319!3d-1.3959454908456643!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x736bd79270f19951!2zMcKwMjMnNTEuMSJTIDM2wrA0MycxOS4zIkU!5e0!3m2!1sen!2ske!4v1667733000918!5m2!1sen!2ske"
+            width="100%" height="100%" style="border:0; min-height:400px;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="drop-icon-sm"></span>
+      <span style="font-family:'Fraunces',serif; font-weight:600;">Adam's Fountain</span>
+    </div>
+    <div class="text-muted-custom" style="font-size:0.85rem;">
+      &copy; <span id="year"></span> Adam's Fountain Purified Water. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- Sticky mobile CTA -->
+<a href="https://wa.me/254728743443?text=Hi%2C%20I%27d%20like%20to%20order%20water" class="mobile-cta btn-order">
+  <i class="bi bi-whatsapp"></i> Order Now
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Animate liquid-fill pricing cards when scrolled into view
+  const cards = document.querySelectorAll('.price-card[data-fill]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fillEl = entry.target.querySelector('.fill');
+        const pct = entry.target.getAttribute('data-fill');
+        fillEl.style.height = pct + '%';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  cards.forEach(card => observer.observe(card));
+</script>
+</body>
+</html>
